@@ -1,3 +1,31 @@
+name = hkcrm
+description = Installs CRM Core, Openatrium and Panopoly in a custom distribution.
+core = 7.x
+exclusive = TRUE
+
+base[] = panopoly
+
+;files[] = openatrium.profile
+
+; Drupal Core
+dependencies[] = menu
+dependencies[] = image
+dependencies[] = list
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = update
+
+;
+; Panopoly Modules
+;
+
 ; Panopoly Foundation
 dependencies[] = panopoly_core
 dependencies[] = panopoly_images
@@ -19,7 +47,178 @@ dependencies[] = simplified_menu_admin
 dependencies[] = save_draft
 dependencies[] = module_filter
 dependencies[] = date_popup_authored
+dependencies[] = views_ui
 
-; Panopoly Recommended - Other
-dependencies[] = devel
-dependencies[] = uuid
+;
+; Open Atrium required modules
+;
+dependencies[] = entity
+dependencies[] = panelizer
+dependencies[] = libraries
+dependencies[] = message
+dependencies[] = message_notify
+dependencies[] = navbar
+dependencies[] = module_filter
+dependencies[] = chosen
+dependencies[] = message_subscribe
+dependencies[] = message_digest
+dependencies[] = message_subscribe_email
+dependencies[] = message_subscribe_ui
+dependencies[] = flag
+dependencies[] = realname
+dependencies[] = features_override
+dependencies[] = panels_mini
+dependencies[] = job_scheduler
+dependencies[] = feeds
+dependencies[] = trash_flag
+dependencies[] = bootstrap_tour
+
+; Organic Groups
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = og_context
+dependencies[] = og_register
+dependencies[] = og_ui
+dependencies[] = og_subgroups
+dependencies[] = og_menu_single
+
+; Libraries
+; not until drupal is GPLv3
+; for now, include twitter js in theme from cdn
+;dependencies[] = twitter_bootstrap_ui
+
+; Open Atrium 2.0 Modules
+dependencies[] = oa_core
+dependencies[] = oa_date
+dependencies[] = oa_diff
+dependencies[] = oa_dashboard
+dependencies[] = oa_notifications
+dependencies[] = og_session_context
+dependencies[] = oa_section_context
+
+; Open Atrium 2.0 Features
+dependencies[] = oa_config
+dependencies[] = oa_widgets
+dependencies[] = oa_teams
+dependencies[] = oa_sections
+dependencies[] = oa_subspaces
+dependencies[] = oa_messages
+dependencies[] = oa_messages_digest
+dependencies[] = oa_sandbox
+dependencies[] = oa_layouts
+dependencies[] = oa_news
+dependencies[] = oa_favorites
+dependencies[] = oa_river
+dependencies[] = oa_users
+dependencies[] = oa_panopoly_users
+dependencies[] = oa_styles
+dependencies[] = oa_media
+dependencies[] = oa_permissions
+dependencies[] = oa_admin
+dependencies[] = oa_search
+dependencies[] = oa_variables
+dependencies[] = oa_buttons
+dependencies[] = oa_tour
+dependencies[] = oa_contextual_tabs
+dependencies[] = oa_responsive_regions
+
+; Open Atrium 2.0 Plugins
+dependencies[] = oa_discussion
+dependencies[] = oa_wiki
+dependencies[] = oa_events
+dependencies[] = oa_events_import
+dependencies[] = oa_worktracker
+
+; Open Atrium 2.0 Optional
+dependencies[] = oa_home
+dependencies[] = oa_appearance
+
+; Contrib Optional
+dependencies[] = panels_customerror
+dependencies[] = apps
+
+
+; CRM Core Donation Demo
+; Core modules.
+dependencies[] = block
+dependencies[] = comment
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = user
+
+; crm core prerequisites
+dependencies[] = entityreference
+dependencies[] = entity
+dependencies[] = relation
+dependencies[] = views
+dependencies[] = views_ui
+dependencies[] = views_data_export
+dependencies[] = views_content
+dependencies[] = views_bulk_operations
+dependencies[] = ctools
+dependencies[] = panels
+dependencies[] = page_manager
+dependencies[] = token
+dependencies[] = rules
+dependencies[] = rules_admin
+
+; field modules
+dependencies[] = name
+dependencies[] = field_group
+dependencies[] = cck_phone
+dependencies[] = link
+dependencies[] = email
+dependencies[] = addressfield
+dependencies[] = date
+
+; helper modules
+dependencies[] = flot
+dependencies[] = mimemail
+dependencies[] = mailsystem
+dependencies[] = admin_menu
+dependencies[] = features
+dependencies[] = context
+dependencies[] = strongarm
+
+; crm core modules
+dependencies[] = crm_core
+dependencies[] = crm_core_ui
+dependencies[] = crm_core_contact
+dependencies[] = crm_core_contact_ui
+dependencies[] = crm_core_activity
+dependencies[] = crm_core_activity_ui
+dependencies[] = crm_core_relationship
+dependencies[] = crm_core_relationship_ui
+dependencies[] = crm_core_user_sync
+dependencies[] = crm_core_report
+dependencies[] = crm_core_match
+dependencies[] = crm_core_default_matching_engine
+dependencies[] = crm_core_profile
+dependencies[] = crm_core_profile_commerce_items
+dependencies[] = crm_core_donation
+dependencies[] = crm_core_demo_standard_fields
+
+; Extra Modules
+dependencies[] = module_filter
+dependencies[] = admin_views
+dependencies[] = ds
+dependencies[] = fpa
+dependencies[] = views_bulk_operations
+dependencies[] = rules_link

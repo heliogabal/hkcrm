@@ -150,3 +150,27 @@ projects[panopoly_search][subdir] = panopoly
 
 ; ***************** End Panopoly *****************
 ; ************************************************
+
+; **************** Extra Modules *****************
+; ************************************************
+
+projects[module_filter][version] = 1.8
+projects[module_filter][subdir] = contrib
+
+projects[admin_menu][version] = "3.0-rc4"
+projects[admin_menu][subdir] = "contrib"
+
+projects[admin_views][version] = "1.2"
+projects[admin_views][subdir] = "contrib"
+
+projects[fpa][version] = "2.3"
+projects[fpa][subdir] = "contrib"
+
+projects[ds][version] = "2.6"
+projects[ds][subdir] = "contrib"
+
+projects[views_bulk_operations][version] = "3.1"
+projects[views_bulk_operations][subdir] = "contrib"
+
+projects[rules_link][version] = 1.0-beta5
+projects[rules_link][subdir] = contrib
