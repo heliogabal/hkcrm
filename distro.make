@@ -27,3 +27,6 @@ projects[hkcrm][download][type] = git
 projects[hkcrm][download][url] = git@github.com:heliogabal/hkcrm.git
 projects[hkcrm][download][branch] = master
 
+; Profiler Library
+libraries[profiler][download][type] = "get"
+ibraries[profiler][download][url] = "http://ftp.drupal.org/files/projects/profiler-7.x-2.0-beta1.tar.gz"
