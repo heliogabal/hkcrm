@@ -1,91 +1,83 @@
 <?php
 
-if(!function_exists('profiler_v2')) {
-  require_once('libraries/profiler/profiler.inc');
-}
-
-profiler_v2('hkcrm');
-
 /**
-* Implements hook_install_tasks_alter() (Panopoly)
-*/
-function hkcrm_install_tasks_alter(&$tasks, $install_state) {
-
-  // Magically go one level deeper in solving years of dependency problems
-  require_once(drupal_get_path('module', 'panopoly_core') . '/panopoly_core.profile.inc');
-  $tasks['install_load_profile']['function'] = 'panopoly_core_install_load_profile';
-}
-
-/**
-* Implements hook_install_tasks(). (Panopoly)
-*/
-function hkcrm_install_tasks($install_state) {
+ * Implements hook_install_tasks()
+ */
+function hkcrm_install_tasks(&$install_state) {
   $tasks = array();
 
-  // Add the Panopoly App Server to the Installation Process
-  require_once(drupal_get_path('module', 'apps') . '/apps.profile.inc');
-  $tasks = $tasks + apps_profile_install_tasks($install_state, array('machine name' => 'panopoly', 'default apps' => array('panopoly_demo')));
+  // Add our custom CSS file for the installation process
+  //drupal_add_css(drupal_get_path('profile', 'openatrium') . '/openatrium.css');
+
+  // Add the Panopoly app selection to the installation process
+
+// Don't install Apps at this time until we have Open Atrium apps
+//  require_once(drupal_get_path('module', 'apps') . '/apps.profile.inc');
+//  $tasks = $tasks + apps_profile_install_tasks($install_state, array('machine name' => 'openatrium', 'default apps' => array()));
+
+  // Add the Panopoly theme selection to the installation process
+  require_once(drupal_get_path('module', 'panopoly_theme') . '/panopoly_theme.profile.inc');
+  $tasks = $tasks + panopoly_theme_profile_theme_selection_install_task($install_state);
+
+  $tasks['open_atrium_features_revert_all'] = array(
+    'type' => 'normal',
+  );
 
   return $tasks;
-
-  return array('profiler_install_profile_complete' => array('display_name' => st('Setting up CRM')),
-  'hkcrm_setup_permissions' => array('display_name' => st('Setting up CRM permissions')));
 }
 
+function open_atrium_features_revert_all() {
+  drupal_set_time_limit(0);
+  features_revert(array('oa_core' => array('field_base'), 'oa_sections' => array('field_base', 'field_instance')));
+  features_revert();
+}
 
 /**
- * Final site setup for the install profile.
+ * Implements hook_install_tasks_alter()
  */
-function hkcrm_setup_permissions(&$install_state) {
-  //Give the super admin user the "advisor" role to make contexts happy.
-  $user = user_load(1);
-  foreach (user_roles() as $rid => $role) {
-    if ($role == 'advisor') {
-      $user->roles[$rid] = $role;
-    }
-  }
-  user_save($user);
-
-  $advisor = db_select('role', 'r')
-             ->fields('r', array('rid'))
-             ->condition('name', 'advisor')
-             ->execute()
-             ->fetchField();
-
-  $advisor_permissions = array('access content',
-                               'access course enrollment information',
-                               'access guiders',
-                               'access student_crm dashboard',
-                               'access user profiles',
-                               'advise students',
-                               'complete crm webforms',
-                               'create crm_core_activity entities of bundle note',
-                               'create relations',
-                               'create tasks for other users',
-                               'create webform content',
-                               'delete any webform content',
-                               'delete relations',
-                               'edit any webform content',
-                               'edit relations',
-                               'maintain own task list',
-                               'open and close cases',
-                               'track user history',
-                               'use text format filtered_html',
-                               'view any crm_core_activity entity of bundle note',
-                               'view any crm_core_contact entity of bundle student',
-                               'view crm dashboard',
-                               'view date repeats',
-                               'view gpa data',
-                               'view hold data');
-
-  if($advisor) {
-    foreach($advisor_permissions as $permission) {
-      $fields = array('rid' => $advisor,
-                       'permission' => $permission,
-                       'module' => 'crm_student');
-      db_insert('role_permission')
-        ->fields($fields)
-        ->execute();
-    }
-  }
+function hkcrm_install_tasks_alter(&$tasks, $install_state) {
+  require_once(drupal_get_path('module', 'oa_core') . '/oa_core.profile.inc');
+  $tasks['install_load_profile']['function'] = 'oa_core_install_load_profile';
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function hkcrm_form_install_configure_form_alter(&$form, $form_state) {
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function hkcrm_form_apps_profile_apps_select_form_alter(&$form, $form_state) {
+  // panopoly_form_apps_profile_apps_select_form_alter($form, $form_state);
+  ############## INCLUDE FROM PANOPOLY #####################
+    // For some things there are no need
+  $form['apps_message']['#access'] = FALSE;
+  $form['apps_fieldset']['apps']['#title'] = NULL;
+
+  // Improve style of apps selection form
+  if (isset($form['apps_fieldset'])) {
+    $manifest = apps_manifest(apps_servers('panopoly'));
+    foreach ($manifest['apps'] as $name => $app) {
+      if ($name != '#theme') {
+        $form['apps_fieldset']['apps']['#options'][$name] = '<strong>' . $app['name'] . '</strong><p><div class="admin-options"><div class="form-item">' . theme('image', array('path' => $app['logo']['path'], 'height' => '32', 'width' => '32')) . '</div>' . $app['description'] . '</div></p>';
+      }
+    }
+  }
+
+  // Remove the demo content selection option since this is handled through the Panopoly demo module.
+  $form['default_content_fieldset']['#access'] = FALSE;
+  // ########### END PANOPOLY ################
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function hkcrm_form_panopoly_theme_selection_form_alter(&$form, &$form_state, $form_id) {
+  // change the default theme in the selection form
+  unset($form['theme_wrapper']['theme']['#options']['radix']);
+  unset($form['theme_wrapper']['theme']['#options']['radix_starter']);
+  $form['theme_wrapper']['theme']['#default_value'] = 'oa_radix';
+}
+
